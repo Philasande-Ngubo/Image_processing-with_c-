@@ -37,6 +37,7 @@ public:
     // read and write PGM images
     void read(const std::string& fileName);
     void write(const std::string& fileName);
+	
 };
 
 #endif
