@@ -1,3 +1,8 @@
+// Philasande Ngubo (NGBPHI016)
+// Date: 1/04/2024
+// University of Cape Town
+// (c) 2025
+
 #ifndef IMG_P
 #define IMG_P
 
@@ -20,6 +25,7 @@ class ConnectedComponent{
 	 }
 	 void add(int pixel){ (*pixels).push_back(pixel);}
 	 std::vector<int> * get() const;
+	 bool isEmpty(){ return ( pixels->size()==0 );}
 	 
 	 friend class PGMimageProcessor;
 };

@@ -1,3 +1,8 @@
+// Philasande Ngubo (NGBPHI016)
+// Date: 1/04/2024
+// University of Cape Town
+// (c) 2025
+
 #include "PGMimageProcessor.h"
 #include <iostream>
 #include <climits>
@@ -135,6 +140,9 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 		}
 	}
 	
+	for (){
+		
+	}
 	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
 	
 	return  (*connectedComponents).size();

@@ -1,0 +1,38 @@
+## Chess.png
+
+Threshold Value: 171 
+
+# Pixel Counts 
+
+- Pawn (Red): 4301 
+- Rook (Blue): 6485
+- Knight (Cyan): 7961
+- Bishop (Green): 5722
+- Queen (Yellow): 7055
+- King (Magenta): 7557
+
+
+## Shapes.png 
+
+Threshold Value: 128 
+
+- Square (Red): 520187
+- Triange (Green): 317252
+- Rectangle (Blue): 512847
+- U-Shape (Orange): 493830 
+- Triangle (Yellow): 264318 
+- Rectangle (Cyan): 337428 
+- Trapezoid (Magenta): 253598 
+
+## Birds.png 
+
+Threshold Value: 35 
+
+- Pink: 4867 
+- Red: 5593 
+- Cyan: 7093 
+- Light Green: 4011 
+- Blue: 7680 
+- Yellow: 6456 
+- Orange: 4834 
+- Dark Green: 5624

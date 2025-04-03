@@ -1,3 +1,8 @@
+// Philasande Ngubo (NGBPHI016)
+// Date: 1/04/2024
+// University of Cape Town
+// (c) 2025
+
 #include <iostream>
 #include <string>
 #include "PGMimageProcessor.h"
@@ -12,6 +17,8 @@ int main(){
 	image.getDims(wdt, ht); 
 	PGMimageProcessor imageProcessor(wdt, ht);
 	
-	imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()), 160);
+	std::cout<<"Number of connectedComponents components :"<<imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()), 160)<<std::endl;
+	std::cout<<"Max:"<<imageProcessor.getLargestSize()<<std::endl;
+	std::cout<<"Min:"<<imageProcessor.getSmallestSize()<<std::endl;
 	return 0;
 }
