@@ -74,8 +74,8 @@ void PGMimageProcessor::add(std::vector<std::vector<int>> * cons, int before, in
 
 int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValidSize){
 	
+	std::cout<<"Extracting connectedComponents ..."<<std::endl;
 	int num_Objects = 0;
-	// set pixel less than threshold to 0 and greater to its object number
 	
 	std::vector<std::vector<int>> conflicts;
 
@@ -119,9 +119,6 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 		}	
 	}
 	
-	
-	std::cout<<"Inigga here"<<std::endl;
-	
 	(*connectedComponents).clear();
 	std::cout<<conflicts.size()<<std::endl;
 	
@@ -129,7 +126,7 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 		(*connectedComponents).push_back( new ConnectedComponent(i));	
 	}
 	
-	std::cout<<"Conflicts size :"<<conflicts.size()<<"  Connected size: "<< (*connectedComponents).size() <<std::endl;
+	
 	
 	for (int i = 0; i < height*width; ++i){
 		int num = int(threshold[i]);
@@ -138,10 +135,11 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 			(*connectedComponents).at(index ) ->add(i);
 		}
 	}
-	std::cout<<"Attemping to test "<<std::endl;
-	//Testing the ish
 	
 	delete [] threshold;
+	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
+	
+	
 	unsigned char * outPut = new unsigned char[height*width];
 	for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}
 	/*for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){
@@ -153,14 +151,23 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 	}*/
 	
 	image.setImageData(outPut,width,height);
-	print("setting data complete");
 	image.write("test.pgm");
-	print("done");
-	return 0;
+	return  (*connectedComponents).size();
 }
 
 int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
-	return 0;
+	std::cout<<"Filtering components outside the size range...."<<std::endl;
+	
+	for (auto itr = (*connectedComponents).begin(); itr != (*connectedComponents).end(); ++itr){
+		
+		int size = (*itr)->get()->size();
+		if( (size < maxSize+1) && (minSize < size)){
+			(*connectedComponents).erase(itr);
+		}
+		
+	}
+	std::cout<<"Filtering components outside the size range complete."<<std::endl;
+	return (*connectedComponents).size();
 }
 bool PGMimageProcessor::writeComponents(const std::string& outFileName){
 	return false;
