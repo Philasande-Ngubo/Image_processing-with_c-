@@ -19,8 +19,9 @@ class ConnectedComponent{
 		 delete [] pixels;
 	 }
 	 void add(int pixel){ (*pixels).push_back(pixel);}
-	 
 	 std::vector<int> * get() const;
+	 
+	 friend class PGMimageProcessor;
 };
 
 class PGMimageProcessor{

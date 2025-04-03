@@ -1,6 +1,6 @@
 #include "PGMimageProcessor.h"
 #include <iostream>
-
+#include <climits>
 #define print(x) std::cout<<x<<std::endl;
 // -----------------------------------PGMimageProcessor class -----------------------------------------------
 
@@ -192,11 +192,18 @@ int PGMimageProcessor::getLargestSize(void) const{
 }
 
 int PGMimageProcessor::getSmallestSize(void) const{
-	return 0;
+	int min = INT_MAX;//largest int con
+	
+	for ( auto itr = (*connectedComponents).begin() ; itr !=(*connectedComponents).end();++itr ){
+		if ( (*itr)->get()->size() < min ){
+			min = (*itr)->get()->size();
+		}
+	}
+	return min;
 }
 
 void PGMimageProcessor::printComponentData(const ConnectedComponent & theComponent) const{
-	int i =0;
+	std::cout<<"ID: "<<theComponent.id<<std::endl<<"Number of pixels: "<<theComponent.get()->size();
 }
 
 
