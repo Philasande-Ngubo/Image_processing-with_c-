@@ -120,7 +120,6 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 	}
 	
 	(*connectedComponents).clear();
-	std::cout<<conflicts.size()<<std::endl;
 	
 	for (int i = 0; i <conflicts.size(); ++i){
 		(*connectedComponents).push_back( new ConnectedComponent(i));	
@@ -136,7 +135,6 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 		}
 	}
 	
-	delete [] threshold;
 	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
 	
 	return  (*connectedComponents).size();
@@ -159,29 +157,38 @@ int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
 
 bool PGMimageProcessor::writeComponents(const std::string& outFileName){
 	
+	std::cout<<"Writing Image..."<<std::endl;
 	try{
-	unsigned char * outPut = new unsigned char[height*width];
-	for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}
-	for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){
+		unsigned char * outPut = new unsigned char[height*width];
+		for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}
+		for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){
 		
-		for ( auto j = (*itr)->get()->begin() ; j !=(*itr)->get()->end() ; ++j){
-			
-			outPut[*j] = char(255);
+			for ( auto j = (*itr)->get()->begin() ; j !=(*itr)->get()->end() ; ++j){
+				outPut[*j] = char(255);
 		}
 	}
 	
 	image.setImageData(outPut,width,height);
 	image.write("test.pgm");
 	}
-	catch(){
+	catch(int myNum){
+		std::cout<<"Could'nt write image to "<< outFileName<<std::endl;
 		return false;
 	}
 	
+	std::cout<<"Succesfully written image to "<< outFileName<<std::endl;
 	return true;
 }
 
 int PGMimageProcessor::getLargestSize(void) const{
-	return 0;
+	int max = 0;
+	
+	for ( auto itr = (*connectedComponents).begin() ; itr !=(*connectedComponents).end();++itr ){
+		if ( (*itr)->get()->size() > max ){
+			max = (*itr)->get()->size();
+		}
+	}
+	return max;
 }
 
 int PGMimageProcessor::getSmallestSize(void) const{

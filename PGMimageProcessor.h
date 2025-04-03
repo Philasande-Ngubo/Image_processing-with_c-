@@ -16,7 +16,7 @@ class ConnectedComponent{
 	 ConnectedComponent(int identity): id(identity){}
 	 ConnectedComponent(int identity , std::vector<int> *&& pxls): id(identity), pixels(pxls){}
 	 ~ConnectedComponent(){
-		 //delete [] pixels;
+		 delete [] pixels;
 	 }
 	 void add(int pixel){ (*pixels).push_back(pixel);}
 	 
