@@ -139,19 +139,6 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 	delete [] threshold;
 	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
 	
-	
-	unsigned char * outPut = new unsigned char[height*width];
-	for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}
-	/*for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){
-		
-		for ( auto j = (*itr)->get()->begin() ; j !=(*itr)->get()->end() ; ++j){
-			
-			outPut[*j] = char(255);
-		}
-	}*/
-	
-	image.setImageData(outPut,width,height);
-	image.write("test.pgm");
 	return  (*connectedComponents).size();
 }
 
@@ -169,8 +156,28 @@ int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
 	std::cout<<"Filtering components outside the size range complete."<<std::endl;
 	return (*connectedComponents).size();
 }
+
 bool PGMimageProcessor::writeComponents(const std::string& outFileName){
-	return false;
+	
+	try{
+	unsigned char * outPut = new unsigned char[height*width];
+	for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}
+	for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){
+		
+		for ( auto j = (*itr)->get()->begin() ; j !=(*itr)->get()->end() ; ++j){
+			
+			outPut[*j] = char(255);
+		}
+	}
+	
+	image.setImageData(outPut,width,height);
+	image.write("test.pgm");
+	}
+	catch(){
+		return false;
+	}
+	
+	return true;
 }
 
 int PGMimageProcessor::getLargestSize(void) const{
