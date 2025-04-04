@@ -103,7 +103,7 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 
 			}else{
 				num_Objects++;
-				rercusive_bfs(threshold,visited,i,num_Objects,minValidSize);
+				iterative_bfs(threshold,visited,i,num_Objects,minValidSize);
 
 			}
 
