@@ -6,6 +6,7 @@
 #include "PGMimageProcessor.h"
 #include <iostream>
 #include <climits>
+#include <queue>
 #define print(x) std::cout<<x<<std::endl;
 // -----------------------------------PGMimageProcessor class -----------------------------------------------
 
@@ -37,43 +38,39 @@ PGMimageProcessor::PGMimageProcessor(PGMimageProcessor&& other){
 
 }
 
-int PGMimageProcessor::getIndex(std::vector<std::vector<int>> * cons, int num){
-	for (int i =0 ; i < cons->size(); ++i){
-		
-		for (int j =0; j < cons->at(i).size(); ++j ){
-			
-			if ( cons->at(i).at(j) == num){
-				return i;
-			}
-		}
-	}
+void PGMimageProcessor::rercusive_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize){
 
-	return -1;
-}
+	if ( ! visited[index]){
 
-void PGMimageProcessor::add(std::vector<std::vector<int>> * cons, int before, int up){
-	
-	int index = -1;
+		if (int(threshold[index]) < minSize ){ //Base case
+			threshold[index] = char(0);
+			visited[index] = 1;
+		}else{
 
-	
-	for (int i =0 ; i < cons->size(); ++i){
-		
-		if ( (cons->at(i).size() ==1) && (cons->at(i).at(0) == up )){
-			index = i;
-		}
+			threshold[index] = char(num_objects);
+			visited[index] = 1;
 
-		for ( int j = 0; j < cons->at(i).size();++j  ){
-			if ( cons->at(i).at(j) == before ){
-				cons->at(i).push_back(up);
-				break;
-			}
+			int y = static_cast<int>( index/ width);
+			int x = index % width;
+
+			int up = (y -1)*width + x;
+			int down = (y +1)*width + x;
+
+			int before = index -1;
+			int after = index +1;
+
+			//edge cases
+			if ( y != 0){rercusive_bfs(threshold,visited, up,num_objects,minSize);} // not top-most pixel
+			if ( y < height){rercusive_bfs(threshold,visited, down,num_objects,minSize);} //not the bottom-most pixel
+
+			if (x != 0){rercusive_bfs(threshold,visited, before,num_objects,minSize);} //not the left-most pixel
+			if (x < width){rercusive_bfs(threshold,visited, after,num_objects,minSize);} //not the right-most pixel
+
 		}
 
+
+
 	}
-	if (index >-1){
-			cons->erase( cons->begin() +index +1);
-	}
-	
 
 }
 
@@ -82,67 +79,42 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 	std::cout<<"Extracting connectedComponents ..."<<std::endl;
 	int num_Objects = 0;
 	
-	std::vector<std::vector<int>> conflicts;
+	int * visited = new int[width*height];
+	for (int i = 0 ; i < width*height;++i){ visited[i] = 0;}
 
-	for (int i =0; i < height; ++i ){
-		
-		for (int j =0; j < width; ++j){
-			
-			int index = i*width + j;
-			
-			if ( int(threshold[index]) < minValidSize ){
-				threshold[index] = char(0);
-				
+	for (int i = 0 ; i < width*height;++i){
+
+		if ( ! visited[i]){
+
+			if ( int(threshold[i]) < minValidSize ){
+				threshold[i] = char(0);
+				visited[i] = 1;
+
+			}else{
+				num_Objects++;
+				rercusive_bfs(threshold,visited,i,num_Objects,minValidSize);
+
 			}
-			else{
-				
-				int up = -1;
-				int before = -1;
-				
-				if ( i !=0 ){ up =int( threshold[(i-1)*width + j]) ;}
-				if (j !=0){ before = int (threshold[index -1]);}
-				
-				if ( up > 0 ){
-					threshold[index] = char(num_Objects);
-					
-					// check in for the conflicts
-					if ( (before > 0) && (before != up) ){
-						add(&conflicts, before ,up );
-					}
-				}
-				
-				else if (before > 0){
-					threshold[index] = char(num_Objects);
-				}
-				else{
-					threshold[index] = char(++num_Objects);
-					std::vector<int> conf;
-					conf.push_back(num_Objects);
-					conflicts.push_back( conf);
-				}
-			}
-		}	
+
+		}
+
 	}
-	
+
 	(*connectedComponents).clear();
-	
-	for (int i = 0; i <conflicts.size(); ++i){
-		(*connectedComponents).push_back( new ConnectedComponent(i));	
+
+	delete [] visited;
+	for (int i = 0; i < num_Objects; ++i){
+		(*connectedComponents).push_back( new ConnectedComponent(i));
 	}
 	
-	
-	
-	for (int i = 0; i < height*width; ++i){
-		int num = int(threshold[i]);
-		if (num > 0){
-			int index = getIndex(&conflicts, num);
-			(*connectedComponents).at(index ) ->add(i);
+	for (int i = 0 ; i < height*width; ++i){
+
+		if ( int(threshold[i]) > 0){
+			(*connectedComponents).at(int(threshold[i]) -1)->add(i);
+			
 		}
 	}
 	
-	for (){
-		
-	}
 	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
 	
 	return  (*connectedComponents).size();

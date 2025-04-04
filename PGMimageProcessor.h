@@ -35,9 +35,9 @@ class PGMimageProcessor{
 	private:
 	 PGMimage image;
 	 int width,height;
-	 int getIndex(std::vector<std::vector<int>> * cons, int num);
-	 void add(std::vector<std::vector<int>> * cons, int before, int up);
+	 void rercusive_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
+
 	
 	public:
 	 PGMimageProcessor(int wdt, int ht) :width(wdt), height(ht){ }
