@@ -77,8 +77,6 @@ void PGMimageProcessor::rercusive_bfs(unsigned char * threshold, int * visited, 
 }
 
 int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValidSize){
-	
-	std::cout<<"Extracting connectedComponents ..."<<std::endl;
 	int num_Objects = 0;
 	
 	int * visited = new int[width*height];
@@ -117,22 +115,24 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 		}
 	}
 	
-	std::cout<<"ConnectedComponents succesfully created."<<std::endl;
-	
 	return  (*connectedComponents).size();
 }
 
 int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
-	std::cout<<"Filtering components outside the size range...."<<std::endl;
 	
-
-	std::cout<<"Filtering components outside the size range complete."<<std::endl;
+	auto filtered_items = (*connectedComponents).erase(
+        std::remove_if(
+            (*connectedComponents).begin(),
+            (*connectedComponents).end(),
+            [minSize,maxSize](ConnectedComponent* rejects) { return ! rejects->inRange(minSize,maxSize); } // Predicate
+        ),
+		(*connectedComponents).end()
+    );
 	return (*connectedComponents).size();
 }
 
 bool PGMimageProcessor::writeComponents(const std::string& outFileName){
-	
-	std::cout<<"Writing Image..."<<std::endl;
+
 	try{
 		unsigned char * outPut = new unsigned char[height*width];
 		for (int i = 0; i < height*width ; ++i){ outPut[i] = char(0);}

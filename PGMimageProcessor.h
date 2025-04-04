@@ -26,7 +26,7 @@ class ConnectedComponent{
 	 void add(int pixel){ (*pixels).push_back(pixel);}
 	 std::vector<int> * get() const;
 	 bool isEmpty(){ return ( pixels->size()==0 );}
-	 bool inRange(int min, int max){ return ( min < pixels->size()) && ( pixels->size() < max) ;}
+	 bool inRange(int min, int max) const{ return ( min -1 < pixels->size()) && ( pixels->size() < max+1) ;} //inclusive
 	 
 	 friend class PGMimageProcessor;
 };
