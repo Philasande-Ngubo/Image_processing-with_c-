@@ -36,7 +36,7 @@ class PGMimageProcessor{
 	private:
 	 PGMimage image;
 	 int width,height;
-	 void rercusive_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
+	 void iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
 
 	

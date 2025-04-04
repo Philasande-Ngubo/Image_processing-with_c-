@@ -40,39 +40,50 @@ PGMimageProcessor::PGMimageProcessor(PGMimageProcessor&& other){
 
 }
 
-void PGMimageProcessor::rercusive_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize){
+void PGMimageProcessor::iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize){
 
-	if ( ! visited[index]){
+	// Create a queue for BFS
+    std::queue<int> q;
+    q.push(index);  
 
-		if (int(threshold[index]) < minSize ){ //Base case
-			threshold[index] = char(0);
-			visited[index] = 1;
-		}else{
+    while (!q.empty()) {
+        int current_index = q.front();  // Get the next pixel to process
+        q.pop();  
 
-			threshold[index] = char(num_objects);
-			visited[index] = 1;
+        if (visited[current_index]) continue; 
 
-			int y = static_cast<int>( index/ width);
-			int x = index % width;
+        if ( int(threshold[current_index]) < minSize) {
+            threshold[current_index] = 0;
+            visited[current_index] = 1;
+            continue;
+        }
 
-			int up = (y -1)*width + x;
-			int down = (y +1)*width + x;
+        // Mark this pixel as part of the current object
+        threshold[current_index] = static_cast<unsigned char>(num_objects);
+        visited[current_index] = 1;
 
-			int before = index -1;
-			int after = index +1;
+        int y = current_index / width;
+        int x = current_index % width;
 
-			//edge cases
-			if ( y != 0){rercusive_bfs(threshold,visited, up,num_objects,minSize);} // not top-most pixel
-			if ( y < height){rercusive_bfs(threshold,visited, down,num_objects,minSize);} //not the bottom-most pixel
+        // Calculate neighbors (up, down, left, right)
+        int up = (y - 1) * width + x;
+        int down = (y + 1) * width + x;
+        int before = current_index - 1;
+        int after = current_index + 1;
 
-			if (x != 0){rercusive_bfs(threshold,visited, before,num_objects,minSize);} //not the left-most pixel
-			if (x < width){rercusive_bfs(threshold,visited, after,num_objects,minSize);} //not the right-most pixel
-
-		}
-
-
-
-	}
+        if (y > 0 && !visited[up]) {  // Not the top-most pixel
+            q.push(up);
+        }
+        if (y < height - 1 && !visited[down]) {  
+            q.push(down);
+        }
+        if (x > 0 && !visited[before]) {  
+            q.push(before);
+        }
+        if (x < width - 1 && !visited[after]) {  
+            q.push(after);
+        }
+    }
 
 }
 
