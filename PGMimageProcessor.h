@@ -51,7 +51,9 @@ class PGMimageProcessor{
 	 bool writeComponents(const std::string& outFileName);
 	 int getLargestSize(void) const; 
 	 int getSmallestSize(void) const;
-	 void printComponentData(const ConnectedComponent & theComponent) const; 	 
+	 void printComponentData(const ConnectedComponent & theComponent) const; 
+	 
+	 friend void run(int charc, char ** charv);
 };
 
 #endif

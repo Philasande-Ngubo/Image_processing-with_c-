@@ -8,6 +8,16 @@
 #include "PGMimageProcessor.h"
 #include <algorithm>
 #include <cctype>
+#include <fstream>
+
+// User arguements
+
+int Default_Minimum_Valid_Object_Size =1;
+int MinSize = 0;
+int MaxSize = 0;
+int Threshold = 0;
+bool shouldPrint = false;
+std::string Output_File = "";
 
 bool isPGM(std::string file){
 	int size = file.size();
@@ -19,31 +29,153 @@ bool isPGM(std::string file){
 	
 }
 
-bool isValid(){
+bool fileExists(std::string file){
+    std::ifstream filea(file);
+	return filea.good();
+
+}
+
+bool isValid(int charc, char ** charv){
 
 	int m =0;
 	int f =0;
 	int t =0;
 	int p =0;
-	int w =0;
-	int m =0;
-	int m =0;
+	int o =0;
+
+	for (int i =2 ; i < charc; ++i){ // check if no arguement is repeated and per arguement is the value correct
+		std::string cur = charv[i];
+		if ( cur == "-m"){
+			m++;
+			if (m >1){
+				return false;
+			}
+
+			try{
+				std::string next_item = charv[i+1];
+				Default_Minimum_Valid_Object_Size = std::stoi(next_item);
+
+			}
+			catch (int i){ return false;}
+
+		}
+
+		if ( cur == "-f"){
+			f++;
+			if (f>1){
+				return false;
+			}
+
+			try{
+				std::string next_item = charv[i+1];
+				std::string next_item_2 = charv[i+2];
+
+				MinSize = std::stoi(next_item);
+				MaxSize = std::stoi(next_item_2);
+				if (MinSize > MaxSize){
+					return false;
+				}
+
+			}
+			catch (int i){ return false;}
+
+		}
+
+		if ( cur == "-t"){
+			t++;
+			if (t >1){
+				return false;
+			}
+			try{
+				std::string next_item = charv[i+1];
+				Threshold = std::stoi(next_item);
+				if (Threshold < 1){
+					return false;
+				}
+
+			}
+			catch (int i){ return false;}
+
+		}
+
+		if ( cur == "-p"){
+			p++;
+			shouldPrint = true;
+			if (p>1){
+				return false;
+			}
+
+		}
+
+		if ( cur == "-o"){
+			o++;
+			if (o >1){
+				return false;
+			}
+
+			try{
+				Output_File = charv[i+1];
+				if ( !isPGM(Output_File)){
+					return false;
+				}
+
+			}
+			catch (int i){ return false;}
+
+		}
+	}
+
+
 
 	return true;
 }
 
 void run(int charc, char ** charv){
 
-	
+	bool valid_arguement=  isValid(charc, charv);
 
 	if ( charc > 1){
 
 		std::string input = charv[1];
 
-		if ( isPGM(input) ){
+		if (valid_arguement){
+			if ( isPGM(input) ){
 
+				if (fileExists(input)){
+
+					if (Threshold > 0){
+
+					PGMimage image;
+					image.read(input);
+					int wd,ht;
+					image.getDims(wd,ht);
+
+					PGMimageProcessor imageProcessor(wd,ht);
+					imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),Threshold );
+					if ( Default_Minimum_Valid_Object_Size > 1){ imageProcessor.filterComponentsBySize(Default_Minimum_Valid_Object_Size, imageProcessor.getLargestSize());}
+					if (MaxSize){ imageProcessor.filterComponentsBySize(MinSize,MaxSize);}
+					if ( Output_File.size() > 4){ imageProcessor.writeComponents(Output_File);}
+					if (shouldPrint){
+
+						for (auto itr = imageProcessor.connectedComponents->begin(); itr != imageProcessor.connectedComponents->end() ; ++itr){
+							imageProcessor.printComponentData( *(*itr) );
+						}
+					}
+
+
+					}else{
+						std::cout<< "No Threshold provided"<<std::endl;
+					}
+				}
+				else{
+					std::cout<< "No such file "<< input<<"."<<std::endl;
+				}
+
+			}else{
+				std::cout<< "Expected a pgm image as a first agurment but none was provided."<<std::endl;
+			}
 		}else{
-			std::cout<< "Expected a pgm image as a first agurment but none was provided."<<std::endl;
+			std::cout<< "Invalid Arguements."<<std::endl;
 		}
 	}
 	else{
@@ -62,19 +194,5 @@ int main(int charc, char ** charv){
 	std::cout<<"\n";
 
 	run(charc,charv);
-	//PGMimage image;
-	//image.read("blu.pgm"); 
-	
-	/*int wdt, ht;
-	image.getDims(wdt, ht); 
-	PGMimageProcessor imageProcessor(wdt, ht);
-	
-	std::cout<<"Number of connectedComponents components :"<<imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()), 80)<<std::endl;
-	std::cout<<"Max:"<<imageProcessor.getLargestSize()<<std::endl;
-	std::cout<<"Min:"<<imageProcessor.getSmallestSize()<<std::endl;
-	//imageProcessor.filterComponentsBySize(5000,6766);
-	//std::cout<<"Max:"<<imageProcessor.getLargestSize()<<std::endl;
-	//std::cout<<"Min:"<<imageProcessor.getSmallestSize()<<std::endl;
-	imageProcessor.writeComponents("itest.pgm");*/
 	return 0;
 }
