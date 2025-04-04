@@ -7,6 +7,8 @@
 #include <iostream>
 #include <climits>
 #include <queue>
+#include <algorithm>
+
 #define print(x) std::cout<<x<<std::endl;
 // -----------------------------------PGMimageProcessor class -----------------------------------------------
 
@@ -123,14 +125,7 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
 	std::cout<<"Filtering components outside the size range...."<<std::endl;
 	
-	for (auto itr = (*connectedComponents).begin(); itr != (*connectedComponents).end(); ++itr){
-		
-		int size = (*itr)->get()->size();
-		if( (size < maxSize+1) && (minSize < size)){
-			(*connectedComponents).erase(itr);
-		}
-		
-	}
+
 	std::cout<<"Filtering components outside the size range complete."<<std::endl;
 	return (*connectedComponents).size();
 }
@@ -149,7 +144,7 @@ bool PGMimageProcessor::writeComponents(const std::string& outFileName){
 	}
 	
 	image.setImageData(outPut,width,height);
-	image.write("test.pgm");
+	image.write(outFileName);
 	}
 	catch(int myNum){
 		std::cout<<"Could'nt write image to "<< outFileName<<std::endl;
