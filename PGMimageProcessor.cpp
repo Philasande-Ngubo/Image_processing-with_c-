@@ -74,13 +74,13 @@ void PGMimageProcessor::iterative_bfs(unsigned char * threshold, int * visited, 
         if (y > 0 && !visited[up]) {  // Not the top-most pixel
             q.push(up);
         }
-        if (y < height - 1 && !visited[down]) {  
+        if (y < height - 1 && !visited[down]) {  // Not the down-most pixel
             q.push(down);
         }
-        if (x > 0 && !visited[before]) {  
+        if (x > 0 && !visited[before]) {  // Not the left-most pixel
             q.push(before);
         }
-        if (x < width - 1 && !visited[after]) {  
+        if (x < width - 1 && !visited[after]) {  // Not the right-most pixels
             q.push(after);
         }
     }
@@ -167,7 +167,7 @@ bool PGMimageProcessor::writeComponents(const std::string& outFileName){
 }
 
 int PGMimageProcessor::getLargestSize(void) const{
-	int max = 0;
+	int max = 0;  //
 	
 	for ( auto itr = (*connectedComponents).begin() ; itr !=(*connectedComponents).end();++itr ){
 		if ( (*itr)->get()->size() > max ){
@@ -189,7 +189,7 @@ int PGMimageProcessor::getSmallestSize(void) const{
 }
 
 void PGMimageProcessor::printComponentData(const ConnectedComponent & theComponent) const{
-	std::cout<<"ID: "<<theComponent.id<<std::endl<<"Number of pixels: "<<theComponent.get()->size();
+	std::cout<< "Pixel \n"<<"  ID: "<<theComponent.id<< std::endl<<"  Number of pixels: "<<theComponent.get()->size()<<std::endl;
 }
 
 

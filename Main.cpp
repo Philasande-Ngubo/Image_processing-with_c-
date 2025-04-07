@@ -19,7 +19,7 @@ int Threshold = 0;
 bool shouldPrint = false;
 std::string Output_File = "";
 
-bool isPGM(std::string file){
+bool isPGM(std::string file){ //Checks if file a pgm
 	int size = file.size();
 
 	if ( file.size() > 4){
@@ -29,7 +29,7 @@ bool isPGM(std::string file){
 	
 }
 
-bool fileExists(std::string file){
+bool fileExists(std::string file){ //Checks if file exists
     std::ifstream filea(file);
 	return filea.good();
 
@@ -159,12 +159,13 @@ void run(int charc, char ** charv){
 
 						for (auto itr = imageProcessor.connectedComponents->begin(); itr != imageProcessor.connectedComponents->end() ; ++itr){
 							imageProcessor.printComponentData( *(*itr) );
+							std::cout<<std::endl;
 						}
 					}
 
 
 					}else{
-						std::cout<< "No Threshold provided"<<std::endl;
+						std::cout<< "No threshold value provided  i.e  -t int"<<std::endl;
 					}
 				}
 				else{
@@ -187,11 +188,6 @@ void run(int charc, char ** charv){
 
 
 int main(int charc, char ** charv){
-
-	for( int i = 1; i < charc;++i){
-		std::cout<<charv[i]<<",";
-	}
-	std::cout<<"\n";
 
 	run(charc,charv);
 	return 0;
