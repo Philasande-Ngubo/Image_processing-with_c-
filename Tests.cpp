@@ -8,7 +8,7 @@
 int one =1;
 int two =2;
 
-TEST_CASE ("Test number of  Connected Component")
+TEST_CASE ("Test number of  Connected Component(Extracted components)")
  {
     PGMimage image;
     image.read("Chess_Colours.pgm");
@@ -49,7 +49,7 @@ TEST_CASE ("MinSize Connected Component")
     
  }
 
- TEST_CASE (" Connected Components")
+ TEST_CASE ("Test for filterComponentsBySize")
  {
     PGMimage image;
     image.read("Chess_Colours.pgm");
@@ -59,7 +59,14 @@ TEST_CASE ("MinSize Connected Component")
     PGMimageProcessor imageProcessor(wd,ht);
     imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 );
 
+    REQUIRE( imageProcessor.getSmallestSize() == 4301); //Before exctracting
     REQUIRE( imageProcessor.getLargestSize() == 7961);
+
+    REQUIRE(imageProcessor.filterComponentsBySize(7000,7961) == 3 );
+   
+    REQUIRE( imageProcessor.getSmallestSize() == 7055); //after exctracting
+    REQUIRE( imageProcessor.getLargestSize() == 7961);
+
     
  }
 
