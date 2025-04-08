@@ -43,7 +43,7 @@ class PGMimageProcessor{
 	 int width,height;
 	 void iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
-	 bool isPGM( ){return std::is_same_v<T, PGMimage> ;}
+	 bool isPGM() const{return std::is_same_v<T, PGMimage> ;}
 
 	
 	public:

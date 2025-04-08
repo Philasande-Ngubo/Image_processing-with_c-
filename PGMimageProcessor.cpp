@@ -90,9 +90,22 @@ void PGMimageProcessor<T>::iterative_bfs(unsigned char * threshold, int * visite
 }
 
 template <typename T>
-int PGMimageProcessor<T>::extractComponents(unsigned char * threshold, int minValidSize){
+int PGMimageProcessor<T>::extractComponents(unsigned char * threshol, int minValidSize){
 	int num_Objects = 0;
-	
+	unsigned char * threshold;
+
+	if (isPGM()){
+		threshold = threshol;
+	}
+	else{
+		threshold = new unsigned char[height*width];
+		int index = -1;
+    	for (int i = 0; i< height*width; i++){
+        	int Intensity = static_cast<int> (static_cast<float>(  0.299*int(threshol[++index]) +  0.587*int(threshol[++index]) +  0.114*int(threshol[++index])));
+        	threshold[i] = char(Intensity);
+    	}
+	}
+
 	int * visited = new int[width*height];
 	for (int i = 0 ; i < width*height;++i){ visited[i] = 0;}
 
