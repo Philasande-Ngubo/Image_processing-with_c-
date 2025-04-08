@@ -11,8 +11,8 @@
 
 #define print(x) std::cout<<x<<std::endl;
 // -----------------------------------PGMimageProcessor class -----------------------------------------------
-
-PGMimageProcessor::PGMimageProcessor(const PGMimageProcessor& other){
+template <class T>
+PGMimageProcessor<T>::PGMimageProcessor(const PGMimageProcessor& other){
 	width = other.width;
 	height = other.height;
 	
@@ -24,7 +24,8 @@ PGMimageProcessor::PGMimageProcessor(const PGMimageProcessor& other){
 	
 }
 
-PGMimageProcessor::PGMimageProcessor(PGMimageProcessor&& other){
+template <typename T>
+PGMimageProcessor<T>::PGMimageProcessor(PGMimageProcessor&& other){
 	
 	width = other.width;
 	height = other.height;
@@ -40,7 +41,8 @@ PGMimageProcessor::PGMimageProcessor(PGMimageProcessor&& other){
 
 }
 
-void PGMimageProcessor::iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize){
+template <typename T>
+void PGMimageProcessor<T>::iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize){
 
 	// Create a queue for BFS
     std::queue<int> q;
@@ -87,7 +89,8 @@ void PGMimageProcessor::iterative_bfs(unsigned char * threshold, int * visited, 
 
 }
 
-int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValidSize){
+template <typename T>
+int PGMimageProcessor<T>::extractComponents(unsigned char * threshold, int minValidSize){
 	int num_Objects = 0;
 	
 	int * visited = new int[width*height];
@@ -129,7 +132,8 @@ int PGMimageProcessor::extractComponents(unsigned char * threshold, int minValid
 	return  (*connectedComponents).size();
 }
 
-int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
+template <typename T>
+int PGMimageProcessor<T>::filterComponentsBySize(int minSize, int maxSize){
 	
 	auto filtered_items = (*connectedComponents).erase(
         std::remove_if(
@@ -142,7 +146,8 @@ int PGMimageProcessor::filterComponentsBySize(int minSize, int maxSize){
 	return (*connectedComponents).size();
 }
 
-bool PGMimageProcessor::writeComponents(const std::string& outFileName){
+template <typename T>
+bool PGMimageProcessor<T>::writeComponents(const std::string& outFileName){
 
 	try{
 		unsigned char * outPut = new unsigned char[height*width];
@@ -166,7 +171,8 @@ bool PGMimageProcessor::writeComponents(const std::string& outFileName){
 	return true;
 }
 
-int PGMimageProcessor::getLargestSize(void) const{
+template <typename T>
+int PGMimageProcessor<T>::getLargestSize(void) const{
 	int max = 0;  //
 	
 	for ( auto itr = (*connectedComponents).begin() ; itr !=(*connectedComponents).end();++itr ){
@@ -177,7 +183,8 @@ int PGMimageProcessor::getLargestSize(void) const{
 	return max;
 }
 
-int PGMimageProcessor::getSmallestSize(void) const{
+template <typename T>
+int PGMimageProcessor<T>::getSmallestSize(void) const{
 	int min = INT_MAX;//largest int con
 	
 	for ( auto itr = (*connectedComponents).begin() ; itr !=(*connectedComponents).end();++itr ){
@@ -188,11 +195,13 @@ int PGMimageProcessor::getSmallestSize(void) const{
 	return min;
 }
 
-void PGMimageProcessor::printComponentData(const ConnectedComponent & theComponent) const{
+template <typename T>
+void PGMimageProcessor<T>::printComponentData(const ConnectedComponent & theComponent) const{
 	std::cout<< "Pixel \n"<<"  ID: "<<theComponent.id<< std::endl<<"  Number of pixels: "<<theComponent.get()->size()<<std::endl;
 }
 
-
+template class PGMimageProcessor<PGMimage>;
+template class PGMimageProcessor<PPMimage>;
 
 // -----------------------------------ConnectedComponent class -----------------------------------------------
 std::vector<int> * ConnectedComponent::get() const{

@@ -10,6 +10,18 @@
 #include <cctype>
 #include <fstream>
 
+#define process  imageProcessor.extractComponents( buffer ,Threshold );\
+if ( Default_Minimum_Valid_Object_Size > 1){ imageProcessor.filterComponentsBySize(Default_Minimum_Valid_Object_Size, imageProcessor.getLargestSize());}\
+if (MaxSize){ imageProcessor.filterComponentsBySize(MinSize,MaxSize);}\
+if ( Output_File.size() > 4){ imageProcessor.writeComponents(Output_File);}\
+if (shouldPrint){\
+\
+	for (auto itr = imageProcessor.connectedComponents->begin(); itr != imageProcessor.connectedComponents->end() ; ++itr){\
+		imageProcessor.printComponentData( *(*itr) );\
+		std::cout<<std::endl;\
+	}\
+} 0
+
 // User arguements
 
 int Default_Minimum_Valid_Object_Size =1;
@@ -24,6 +36,16 @@ bool isPGM(std::string file){ //Checks if file a pgm
 
 	if ( file.size() > 4){
 		return file.substr(size-4,4) == ".pgm";
+	}
+	return false;
+	
+}
+
+bool isPPM(std::string file){ //Checks if file a pgm
+	int size = file.size();
+
+	if ( file.size() > 4){
+		return file.substr(size-4,4) == ".ppm";
 	}
 	return false;
 	
@@ -139,19 +161,37 @@ void run(int charc, char ** charv){
 		std::string input = charv[1];
 
 		if (valid_arguement){
-			if ( isPGM(input) ){
+			if ( isPGM(input) || isPPM(input) ){
 
 				if (fileExists(input)){
 
 					if (Threshold > 0){
 
-					PGMimage image;
-					image.read(input);
 					int wd,ht;
-					image.getDims(wd,ht);
+					wd = 0;
+					ht =0;
+					unsigned char * buffer;
+						
+					if (isPGM(input)){
+						PGMimage image;
+						image.read(input);
+						image.getDims(wd,ht);
+						buffer = const_cast<unsigned char *>(image.getBuffer());
+						PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
+						process;
+					    
 
-					PGMimageProcessor imageProcessor(wd,ht);
-					imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),Threshold );
+					}else{
+						PPMimage image;
+						image.read(input);
+						image.getDims(wd,ht);
+						buffer = const_cast<unsigned char *>(image.getBuffer());
+						PGMimageProcessor<PPMimage> imageProcessor(wd,ht);
+						process;
+					}
+
+					/*PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
+					imageProcessor.extractComponents( buffer ,Threshold );
 					if ( Default_Minimum_Valid_Object_Size > 1){ imageProcessor.filterComponentsBySize(Default_Minimum_Valid_Object_Size, imageProcessor.getLargestSize());}
 					if (MaxSize){ imageProcessor.filterComponentsBySize(MinSize,MaxSize);}
 					if ( Output_File.size() > 4){ imageProcessor.writeComponents(Output_File);}
@@ -161,7 +201,7 @@ void run(int charc, char ** charv){
 							imageProcessor.printComponentData( *(*itr) );
 							std::cout<<std::endl;
 						}
-					}
+					}*/
 
 
 					}else{
@@ -173,7 +213,7 @@ void run(int charc, char ** charv){
 				}
 
 			}else{
-				std::cout<< "Expected a pgm image as a first agurment but none was provided."<<std::endl;
+				std::cout<< "Expected a pgm/ppm image as a first agurment but none was provided."<<std::endl;
 			}
 		}else{
 			std::cout<< "Invalid Arguements."<<std::endl;

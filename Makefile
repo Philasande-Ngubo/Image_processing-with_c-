@@ -1,9 +1,9 @@
-findcomp: a.o b.o c.o
-	@g++ a.o b.o c.o -o findcomp
+findcomp: a.o b.o e.o c.o 
+	@g++ a.o b.o e.o c.o  -o findcomp
 	@echo "findcomp created";
 	
-test: a.o b.o d.o
-	@g++ a.o b.o d.o -o test
+test: a.o b.o e.o d.o 
+	@g++ a.o b.o d.o e.o -o test
 	@echo "test created ";
 
 a.o:
@@ -18,12 +18,13 @@ c.o:
 d.o:
 	@g++ -c Tests.cpp -o d.o
 
+e.o:
+	@g++ -c PPMimage.cpp -o e.o
+
 
 clean:
-	@for file in *.o; do\
-		rm -f file;\
-	done
 
+	@-rm *.o
 	@if [ -f findcomp ]; then\
 		rm findcomp;\
 	else\

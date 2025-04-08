@@ -7,10 +7,12 @@
 #define IMG_P
 
 #include "PGMimage.h"
+#include "PPMimage.h"
 #include <memory>
 #include <iterator>
 #include <vector>
 #include <iostream>
+#include <type_traits>
 
 class ConnectedComponent{
 	private:
@@ -28,9 +30,12 @@ class ConnectedComponent{
 	 bool isEmpty(){ return ( pixels->size()==0 );}
 	 bool inRange(int min, int max) const{ return ( min -1 < pixels->size()) && ( pixels->size() < max+1) ;} //inclusive
 	 
+	 template <typename T>
 	 friend class PGMimageProcessor;
+
 };
 
+template <typename T>
 class PGMimageProcessor{
 	
 	private:
@@ -38,6 +43,7 @@ class PGMimageProcessor{
 	 int width,height;
 	 void iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
+	 bool isPGM( ){return std::is_same_v<T, PGMimage> ;}
 
 	
 	public:
@@ -45,6 +51,7 @@ class PGMimageProcessor{
 	 PGMimageProcessor(const PGMimageProcessor& other);
 	 PGMimageProcessor(PGMimageProcessor&& other);
 	 ~PGMimageProcessor(){} //No need
+	 
 	 
 	 int extractComponents(unsigned char * threshold, int minValidSize); 
 	 int filterComponentsBySize(int minSize, int maxSize); 
