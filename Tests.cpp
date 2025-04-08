@@ -17,7 +17,7 @@ bool fileExists(std::string file){ //Checks if file exists
 TEST_CASE ("Test number of  Connected Component(Extracted components)")
  {
     PGMimage image;
-    image.read("Chess_Colours.pgm");
+    image.read("test_file/Chess_Colours.pgm");
     int wd,ht;
     image.getDims(wd,ht);
 
@@ -30,7 +30,7 @@ TEST_CASE ("Test number of  Connected Component(Extracted components)")
 TEST_CASE ("MinSize Connected Component")
  {
     PGMimage image;
-    image.read("Chess_Colours.pgm");
+    image.read("test_file/Chess_Colours.pgm");
     int wd,ht;
     image.getDims(wd,ht);
 
@@ -44,7 +44,7 @@ TEST_CASE ("MinSize Connected Component")
  TEST_CASE ("MaxSize Connected Components")
  {
     PGMimage image;
-    image.read("Chess_Colours.pgm");
+    image.read("test_file/Chess_Colours.pgm");
     int wd,ht;
     image.getDims(wd,ht);
 
@@ -58,7 +58,7 @@ TEST_CASE ("MinSize Connected Component")
  TEST_CASE ("Test for filterComponentsBySize")
  {
     PGMimage image;
-    image.read("Chess_Colours.pgm");
+    image.read("test_file/Chess_Colours.pgm");
     int wd,ht;
     image.getDims(wd,ht);
 
@@ -76,11 +76,11 @@ TEST_CASE ("MinSize Connected Component")
     
  }
 
- TEST_CASE ("Test for writeComponents1")
+ TEST_CASE ("Test for writeComponents")
  {
     
     PGMimage image;
-    image.read("Chess_Colours.pgm");
+    image.read("test_file/Chess_Colours.pgm");
     int wd,ht;
     image.getDims(wd,ht);
 

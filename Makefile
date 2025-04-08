@@ -1,24 +1,29 @@
 findcomp: a.o b.o c.o
-	g++ a.o b.o c.o -o findcomp
+	@g++ a.o b.o c.o -o findcomp
+	@echo "findcomp created";
 	
 test: a.o b.o d.o
-	g++ a.o b.o d.o -o test
+	@g++ a.o b.o d.o -o test
+	@echo "test created ";
 
 a.o:
-	g++ -c PGMimage.cpp -o a.o
+	@g++ -c PGMimage.cpp -o a.o
 
 b.o:
-	g++ -c PGMimageProcessor.cpp -o b.o
+	@g++ -c PGMimageProcessor.cpp -o b.o
 
 c.o:
-	g++ -c Main.cpp -o c.o
+	@g++ -c Main.cpp -o c.o
 
 d.o:
-	g++ -c Tests.cpp -o d.o
+	@g++ -c Tests.cpp -o d.o
 
 
 clean:
-	rm -f *.o
+	@for file in *.o; do\
+		rm -f file;\
+	done
+
 	@if [ -f findcomp ]; then\
 		rm findcomp;\
 	else\
@@ -30,5 +35,8 @@ clean:
 	else\
 		continue;\
 	fi
+
+	@echo "Cleaned !!!";\
+
    
 
