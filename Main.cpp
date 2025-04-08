@@ -14,6 +14,7 @@
 if ( Default_Minimum_Valid_Object_Size > 1){ imageProcessor.filterComponentsBySize(Default_Minimum_Valid_Object_Size, imageProcessor.getLargestSize());}\
 if (MaxSize){ imageProcessor.filterComponentsBySize(MinSize,MaxSize);}\
 if ( Output_File.size() > 4){ imageProcessor.writeComponents(Output_File);}\
+if ( highlightedImage.size() > 4){ imageProcessor.highlightComponents(highlightedImage);}\
 if (shouldPrint){\
 \
 	for (auto itr = imageProcessor.connectedComponents->begin(); itr != imageProcessor.connectedComponents->end() ; ++itr){\
@@ -30,6 +31,7 @@ int MaxSize = 0;
 int Threshold = 0;
 bool shouldPrint = false;
 std::string Output_File = "";
+std::string highlightedImage = "";
 
 bool isPGM(std::string file){ //Checks if file a pgm
 	int size = file.size();
@@ -64,6 +66,7 @@ bool isValid(int charc, char ** charv){
 	int t =0;
 	int p =0;
 	int o =0;
+	int b =0;
 
 	for (int i =2 ; i < charc; ++i){ // check if no arguement is repeated and per arguement is the value correct
 		std::string cur = charv[i];
@@ -129,7 +132,7 @@ bool isValid(int charc, char ** charv){
 
 		}
 
-		if ( cur == "-o"){
+		if ( cur == "-w"){
 			o++;
 			if (o >1){
 				return false;
@@ -138,6 +141,23 @@ bool isValid(int charc, char ** charv){
 			try{
 				Output_File = charv[i+1];
 				if ( !isPGM(Output_File)){
+					return false;
+				}
+
+			}
+			catch (int i){ return false;}
+
+		}
+
+		if ( cur == "-b"){
+			b++;
+			if (b >1){
+				return false;
+			}
+
+			try{
+				highlightedImage = charv[i+1];
+				if ( !isPPM(highlightedImage)){
 					return false;
 				}
 
@@ -190,20 +210,7 @@ void run(int charc, char ** charv){
 						process;
 					}
 
-					/*PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
-					imageProcessor.extractComponents( buffer ,Threshold );
-					if ( Default_Minimum_Valid_Object_Size > 1){ imageProcessor.filterComponentsBySize(Default_Minimum_Valid_Object_Size, imageProcessor.getLargestSize());}
-					if (MaxSize){ imageProcessor.filterComponentsBySize(MinSize,MaxSize);}
-					if ( Output_File.size() > 4){ imageProcessor.writeComponents(Output_File);}
-					if (shouldPrint){
-
-						for (auto itr = imageProcessor.connectedComponents->begin(); itr != imageProcessor.connectedComponents->end() ; ++itr){
-							imageProcessor.printComponentData( *(*itr) );
-							std::cout<<std::endl;
-						}
-					}*/
-
-
+				
 					}else{
 						std::cout<< "No threshold value provided  i.e  -t int"<<std::endl;
 					}

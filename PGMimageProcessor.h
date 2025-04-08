@@ -41,6 +41,7 @@ class PGMimageProcessor{
 	private:
 	 PGMimage image;
 	 int width,height;
+	 unsigned char * curFile;
 	 void iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
 	 bool isPGM() const{return std::is_same_v<T, PGMimage> ;}
@@ -59,6 +60,7 @@ class PGMimageProcessor{
 	 int getLargestSize(void) const; 
 	 int getSmallestSize(void) const;
 	 void printComponentData(const ConnectedComponent & theComponent) const; 
+	 void highlightComponents(std::string name) const;
 	 
 	 friend void run(int charc, char ** charv);
 };

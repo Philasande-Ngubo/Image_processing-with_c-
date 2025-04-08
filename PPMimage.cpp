@@ -84,7 +84,6 @@ void PPMimage::write(const string& fileName)
         cerr << "Unable to open PPM output file " << fileName << endl;
         return;
     }
-    cout<<"I am here"<<endl;
 
     ofs << "P6\n#File produced by P Marais\n" << width << " " << height << endl << 255 << endl;
     ofs.write(reinterpret_cast<char*>(buffer), width * height * 3);

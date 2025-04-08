@@ -43,7 +43,7 @@ Arguements:1
     print out all the component data (entries do not have to be sorted) as well as the total 
     component number and the sizes of the smallest and largest components.
 
--o <string filename(PGM)>:
+-w <string filename(PGM)>:
     (optional):
     write out all retained components (as foreground/background pixels) to a new PGM file.  
 
@@ -52,14 +52,14 @@ Examples:
 
 1. findcomp Birds.pgm -t 100
 
-2. findcomp Birds.pgm -t 1110 -m 2000
+2. findcomp Birds.pgm -t 110 -m 2000
    this is the same as findcomp Birds.pgm -m 2000 -t 100 (The order of other components don't matter)
 
 3. findcomp Birds.pgm -t 180 -m 2000 -f 3000 7500
 
 4. findcomp Birds.pgm -t 120 -m 2000  -p -f 3000 7500
 
-5. findcomp Birds.pgm -p -t 145 -m 2000 -f 3000 7500 -o Birds_o.pgm
+5. findcomp Birds.pgm -p -t 145 -m 2000 -f 3000 7500 -w Birds_o.pgm
 
 NB: the order of the Arguements doesn't matter except the input name must be at the beginning
 

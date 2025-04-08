@@ -96,8 +96,11 @@ int PGMimageProcessor<T>::extractComponents(unsigned char * threshol, int minVal
 
 	if (isPGM()){
 		threshold = threshol;
+		curFile = new unsigned char[width*height];
+		for (int i = 0; i< height*width; i++){curFile[i] = threshol[i];}
 	}
 	else{
+		curFile = threshol;
 		threshold = new unsigned char[height*width];
 		int index = -1;
     	for (int i = 0; i< height*width; i++){
@@ -211,6 +214,28 @@ int PGMimageProcessor<T>::getSmallestSize(void) const{
 template <typename T>
 void PGMimageProcessor<T>::printComponentData(const ConnectedComponent & theComponent) const{
 	std::cout<< "Pixel \n"<<"  ID: "<<theComponent.id<< std::endl<<"  Number of pixels: "<<theComponent.get()->size()<<std::endl;
+}
+
+template <typename T>
+void PGMimageProcessor<T>::highlightComponents(std::string name) const{
+	unsigned char * output;
+	if(isPGM() ){
+		output = new unsigned char[height*width*3];
+	
+		for ( int i = 0 ; i < height*width ; ++i){
+			output[i*3] = curFile[i];
+			output[i*3+1] = curFile[i];
+			output[i*3+2] = curFile[i];
+
+		}
+	}
+	else{
+		output = curFile;
+	}
+	PPMimage ppmimage;
+	ppmimage.setImageData(output,width,height);
+	ppmimage.write(name);
+	if(isPGM() ){delete [] output;}
 }
 
 template class PGMimageProcessor<PGMimage>;
