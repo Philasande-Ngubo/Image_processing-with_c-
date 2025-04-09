@@ -95,26 +95,3 @@ void PPMimage::write(const string& fileName)
     ofs.close();
 }
 
-/*int main(){
-    PPMimage image;
-    image.read("Mxo.ppm");
-    int wd, ht;
-    image.getDims(wd,ht);
-    std::cout<<"Width :"<<wd<<" , Height:"<<ht<<". \n";
-
-    unsigned char * buffer = const_cast<unsigned char *>(image.getBuffer());
-    image.setImageData( buffer,320,320);
-    image.write("inja_mfethu.ppm");
-
-    unsigned char * OutPut = new unsigned char[wd*ht];
-    int index = -1;
-    for (int i = 0; i< ht*wd; i++){
-        int Intensity = static_cast<int> (static_cast<float>(  0.299*int(buffer[++index]) +  0.587*int(buffer[++index]) +  0.114*int(buffer[++index])));
-        OutPut[i] = char(Intensity);
-    }
-
-    PGMimage pimage;
-    pimage.setImageData( OutPut,320,320);
-    pimage.write("Nguuu.pgm");
-    return 0;
-}*/

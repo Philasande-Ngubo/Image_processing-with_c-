@@ -100,7 +100,7 @@ int PGMimageProcessor<T>::extractComponents(unsigned char * threshol, int minVal
 		for (int i = 0; i< height*width; i++){curFile[i] = threshol[i];}
 	}
 	else{
-		curFile = threshol;
+		curFile = threshol; // is a ppm image construct an intensity buffer
 		threshold = new unsigned char[height*width];
 		int index = -1;
     	for (int i = 0; i< height*width; i++){
@@ -151,11 +151,11 @@ int PGMimageProcessor<T>::extractComponents(unsigned char * threshol, int minVal
 template <typename T>
 int PGMimageProcessor<T>::filterComponentsBySize(int minSize, int maxSize){
 	
-	auto filtered_items = (*connectedComponents).erase(
+	auto filtered_items = (*connectedComponents).erase( // erase idioms
         std::remove_if(
             (*connectedComponents).begin(),
             (*connectedComponents).end(),
-            [minSize,maxSize](ConnectedComponent* rejects) { return ! rejects->inRange(minSize,maxSize); } // Predicate
+            [minSize,maxSize](ConnectedComponent* rejects) { return ! rejects->inRange(minSize,maxSize); } // predicate
         ),
 		(*connectedComponents).end()
     );
@@ -232,16 +232,140 @@ void PGMimageProcessor<T>::highlightComponents(std::string name) const{
 	else{
 		output = curFile;
 	}
+
+	for ( auto itr =(*connectedComponents).begin() ; itr != (*connectedComponents).end(); ++itr ){ // draw rectangles for all the recorded components
+		
+		(*itr)->setMargins(width,height);
+		drawRectangle( (*itr)->leftmost, (*itr)->rightmost,(*itr)->upmost, (*itr)->downmost  ,output);
+	}
+
 	PPMimage ppmimage;
 	ppmimage.setImageData(output,width,height);
 	ppmimage.write(name);
-	if(isPGM() ){delete [] output;}
+	if(isPGM() ){delete [] output;} //free the custom ppm from the pgm as no class is responsible for it
+}
+
+template <typename T>
+void PGMimageProcessor<T>::drawRectangle(int leftmost, int rightmost, int upmost,int downmost, unsigned char * pixies) const {
+
+	int line_width = (rightmost % width) - (leftmost % width);
+	int line_height =(downmost /width) - (upmost/width);
+
+	int topleft = ( upmost/width -2)*width + ( leftmost% width);
+	int bottomleft = ( downmost/width -2)*width + ( leftmost% width);
+	int topright = ( upmost/width -2)*width + ( rightmost% width);
+
+	for (int i = topleft; i < topleft+line_width ; ++i){ //draw the top horizontal line
+		if (i < 0){break;}
+		pixies[i*3] = char(255);
+		pixies[i*3 + 1] = char(0);
+		pixies[i*3 + 2] = char(0);
+
+		for (int j = 1 ; j < 2; ++j ){//thickness
+			int index = (( i/ width) -j) * width + (i % width);
+			if (index < 0){break;}
+			pixies[index*3] = char(255);
+			pixies[index*3 + 1] = char(0);
+			pixies[index*3 + 2] = char(0);
+		}
+
+	}
+
+	for (int i = bottomleft ; i < bottomleft+ line_width ; ++i){ //draw the bottom horizontal line
+		if (i > height *width){break;}
+		pixies[i*3] = char(255);
+		pixies[i*3 + 1] = char(0);
+		pixies[i*3 + 2] = char(0);
+
+		for (int j = 1 ; j < 2; ++j ){//thickness
+			int index = (( i/ width) +j) * width + (i % width);
+			if (index > height *width ){break;}
+			pixies[index*3] = char(255);
+			pixies[index*3 + 1] = char(0);
+			pixies[index*3 + 2] = char(0);
+		}
+	}
+
+	for (int i = topleft; i < topleft + line_height* width; i+=width){ //draw the left vertical line
+
+		pixies[i*3] = char(255);
+		pixies[i*3 + 1] = char(0);
+		pixies[i*3 + 2] = char(0);
+
+		for (int j = 1 ; j < 2; ++j ){ //thickness
+			int index = i -j;
+			if ( i/width > index){break;}
+			pixies[index*3] = char(255);
+			pixies[index*3 + 1] = char(0);
+			pixies[index*3 + 2] = char(0);
+
+		}
+
+	}
+
+	for (int i = topright; i < topright + line_height* width; i+=width){ //draw the right vertical line
+
+		pixies[i*3] = char(255);
+		pixies[i*3 + 1] = char(0);
+		pixies[i*3 + 2] = char(0);
+
+		for (int j = 1 ; j < 2; ++j ){ //thickness
+			int index = i +j;
+			if ( i/width > index){break;}
+			pixies[index*3] = char(255);
+			pixies[index*3 + 1] = char(0);
+			pixies[index*3 + 2] = char(0);
+
+		}
+
+	}
+
 }
 
 template class PGMimageProcessor<PGMimage>;
 template class PGMimageProcessor<PPMimage>;
 
 // -----------------------------------ConnectedComponent class -----------------------------------------------
+
+
+ConnectedComponent::ConnectedComponent( ConnectedComponent & other): id(id), leftmost(leftmost), rightmost(rightmost), upmost(upmost), downmost(downmost){
+	pixels->clear();
+	for ( auto itr = pixels->begin(); itr != pixels->end(); ++itr){
+		pixels->push_back(*itr);
+	}
+}
+
+ConnectedComponent::ConnectedComponent( ConnectedComponent && other): id(id), leftmost(leftmost), rightmost(rightmost), upmost(upmost), downmost(downmost){
+	pixels->clear();
+	for ( auto itr = other.pixels->begin(); itr != other.pixels->end(); ++itr){
+		pixels->push_back(*itr);
+	}
+	other.pixels->clear();
+	pixels = nullptr;
+
+}
+
 std::vector<int> * ConnectedComponent::get() const{
 	return pixels;
+}
+
+void ConnectedComponent::setMargins(int width, int height){
+	leftmost = -1;rightmost =-1;
+	upmost =-1;downmost =-1;
+
+	if ( pixels->size() ==0){return;}
+
+	leftmost = pixels->at(0);
+	rightmost = leftmost;
+	upmost = leftmost;
+	downmost = upmost;
+
+	for ( auto itr = pixels->begin(); itr != pixels->end(); ++itr){
+		int pos = * itr;
+		if ( (leftmost % width ) > (pos % width)  ){leftmost =pos;}   //Recording the edges
+		if ( (rightmost % width ) < (pos % width)  ){rightmost =pos;}
+		if ( (upmost /width ) > (pos / width)  ){upmost =pos;}
+		if ( (downmost /width ) < (pos / width)  ){downmost =pos;}
+	}
+
 }

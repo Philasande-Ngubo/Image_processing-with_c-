@@ -1,0 +1,131 @@
+commit 0416dd4e093c736703a87f4079686aceb5a2afab
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 8 22:55:53 2025 +0000
+
+    the -b commands but is yet to to draw squares rectangles around the connected components
+
+commit e3795f44ba9697cd7853f01e65e56d6f1eb2f7ca
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 8 22:04:15 2025 +0000
+
+    The image processor can now take ppm as an input
+
+commit 89397e561ef9a412eebc37bde9f498995e1a9365
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 8 20:10:03 2025 +0000
+
+    Added template to the PGMimageProcessor class
+
+commit d5a3db0ae105a3e6d486749a189fc62f647bb18d
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 8 11:09:44 2025 +0000
+
+    Added a header file for a PPMimage class
+
+commit cd9d7f4a3ad97b7f71c21305b7d2c8d2f47079c7
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Mon Apr 7 23:13:39 2025 +0000
+
+    added a test for writeComponents
+
+commit d35d44688ec517ec93c3a7ac82350635e8e42d83
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Mon Apr 7 22:49:36 2025 +0000
+
+    added a test for filterComponentsBySize
+
+commit 948580b32de81b130b843b4e734adef3bc0fffca
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Mon Apr 7 22:42:22 2025 +0000
+
+    Added a Test for the number of connected components
+
+commit 8dbc1c586bad4679f9d447c3b87c96140a336629
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Mon Apr 7 22:39:40 2025 +0000
+
+    Started Unit Testing and implemented MinSize and MaxSize  test
+
+commit 6ba0e99c0bd52d56c43681923558677d50d94230
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 19:05:25 2025 +0000
+
+    Implemented the taking of input via the command line under the void run(int charc, char ** charv) method
+
+commit 4bdcd03c3f288c8d360a36b719a28132e2fb7924
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 13:58:00 2025 +0000
+
+    Added isPGM method to main to check if a file is a valid file pgm
+
+commit ff38bcc6dee6507b9fad5e5dfd69ea2aa068d4d6
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 12:36:50 2025 +0000
+
+    Implemented the bfs iteratively as opposed to the previous recursion that resulted in a stack overflow
+
+commit 21bc8d6b05d0e4fa731200f9ab46e40849b1d4a9
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 03:31:25 2025 +0000
+
+    Fixed bugs on the getSmallestSize() by using remove idioms and a lambda
+
+commit 4359facacf1b66381fcee31aca89849520cc8689
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 02:56:43 2025 +0000
+
+    Added an inRange(int min, int max)  to ConnectedComponents to check wether the number of pixels in that component is in a specified range (inclusive)
+
+commit 9119d1cf8b7c70be46d1ee3b88fa8a87c0c6b5c2
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Fri Apr 4 02:39:31 2025 +0000
+
+    Implemented the extractComponents using the effecient bfs approach
+
+commit 681b26c5010b634f1667eb23b5c8d896c6648ea5
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Thu Apr 3 21:09:53 2025 +0000
+
+    Added an isEmpty() method to the ConnectedComponents class
+
+commit 96727f47a0ba9c9dba11d1dbdcdb51aba92a113e
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Thu Apr 3 17:48:28 2025 +0000
+
+    finished the printComponentData(const ConnectedComponent & theComponent) method
+
+commit 1c0d372dfec3c679803681af560f668b1b2e2f53
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Thu Apr 3 14:29:18 2025 +0000
+
+    completed the getLargestSize(void) method
+
+commit 5ab1375cb9a52a96d31dbea6c651e2fa0b6197b0
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Thu Apr 3 13:49:05 2025 +0000
+
+     completed the writeComponents(const std::string& outFileName) method
+
+commit fa14653d15363f99a20d4a6880d3513333a5b64d
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Thu Apr 3 07:11:42 2025 +0000
+
+    Implemented the filterComponentsBySize(int,int) method
+
+commit da13c70e11e1bc67b56081540ab56206a86a49ea
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Wed Apr 2 23:50:23 2025 +0000
+
+    the extractComponents() method is working properly
+
+commit caedbda98c1843690f8c50c2bb50469066c489cf
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 1 18:11:58 2025 +0000
+
+    Implement all constructors of the PGMimageProcessor class
+
+commit 3b9cf848ff0327094d6ae4af32730701a668853b
+Author: Philasande Ngubo <ngbphi016@nightmare.cs.uct.ac.za>
+Date:   Tue Apr 1 16:33:52 2025 +0000
+
+    Made the skeleton of the PGMimageProcessor class

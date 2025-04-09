@@ -21,7 +21,7 @@ TEST_CASE ("Test number of  Connected Component(Extracted components)")
     int wd,ht;
     image.getDims(wd,ht);
 
-    PGMimageProcessor imageProcessor(wd,ht);
+    PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
     REQUIRE( imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 ) == 6);
     
  }
@@ -34,7 +34,7 @@ TEST_CASE ("MinSize Connected Component")
     int wd,ht;
     image.getDims(wd,ht);
 
-    PGMimageProcessor imageProcessor(wd,ht);
+    PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
     imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 );
 
     REQUIRE( imageProcessor.getSmallestSize() == 4301);
@@ -48,7 +48,7 @@ TEST_CASE ("MinSize Connected Component")
     int wd,ht;
     image.getDims(wd,ht);
 
-    PGMimageProcessor imageProcessor(wd,ht);
+    PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
     imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 );
 
     REQUIRE( imageProcessor.getLargestSize() == 7961);
@@ -62,7 +62,7 @@ TEST_CASE ("MinSize Connected Component")
     int wd,ht;
     image.getDims(wd,ht);
 
-    PGMimageProcessor imageProcessor(wd,ht);
+    PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
     imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 );
 
     REQUIRE( imageProcessor.getSmallestSize() == 4301); //Before extracting
@@ -84,7 +84,7 @@ TEST_CASE ("MinSize Connected Component")
     int wd,ht;
     image.getDims(wd,ht);
 
-    PGMimageProcessor imageProcessor(wd,ht);
+    PGMimageProcessor<PGMimage> imageProcessor(wd,ht);
     imageProcessor.extractComponents( const_cast<unsigned char *>(image.getBuffer()),171 );
 
     std::string filename ="cbnbvbcvbfbvfvbdjfdjfdkfdf.pgm";

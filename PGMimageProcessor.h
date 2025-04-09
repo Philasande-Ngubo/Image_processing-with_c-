@@ -16,12 +16,14 @@
 
 class ConnectedComponent{
 	private:
-	 int id;
+	 int id, leftmost,rightmost,upmost, downmost;
 	 std::vector<int> * pixels = new std::vector<int>();
 	
 	public:
 	 ConnectedComponent(int identity): id(identity){}
 	 ConnectedComponent(int identity , std::vector<int> *&& pxls): id(identity), pixels(pxls){}
+	 ConnectedComponent( ConnectedComponent & other);
+	 ConnectedComponent( ConnectedComponent && other);
 	 ~ConnectedComponent(){
 		 delete [] pixels;
 	 }
@@ -29,6 +31,7 @@ class ConnectedComponent{
 	 std::vector<int> * get() const;
 	 bool isEmpty(){ return ( pixels->size()==0 );}
 	 bool inRange(int min, int max) const{ return ( min -1 < pixels->size()) && ( pixels->size() < max+1) ;} //inclusive
+	 void setMargins(int width, int height);
 	 
 	 template <typename T>
 	 friend class PGMimageProcessor;
@@ -45,6 +48,7 @@ class PGMimageProcessor{
 	 void iterative_bfs(unsigned char * threshold, int * visited, int index, int num_objects, int minSize);
 	 std::unique_ptr<std::vector< ConnectedComponent *> > connectedComponents = std::make_unique<std::vector< ConnectedComponent*>>();
 	 bool isPGM() const{return std::is_same_v<T, PGMimage> ;}
+	 void drawRectangle(int leftmost, int rightmost, int upmost,int downmost, unsigned char * pixies) const;
 
 	
 	public:

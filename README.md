@@ -47,6 +47,10 @@ Arguements:1
     (optional):
     write out all retained components (as foreground/background pixels) to a new PGM file.  
 
+-b <string filename<PPM>>:
+    (optional)
+    draws a thin red box around the extracted connectedComponents and saves the result
+    to the specified output PPM file
 
 Examples:
 
@@ -60,6 +64,8 @@ Examples:
 4. findcomp Birds.pgm -t 120 -m 2000  -p -f 3000 7500
 
 5. findcomp Birds.pgm -p -t 145 -m 2000 -f 3000 7500 -w Birds_o.pgm
+
+6. findcomp Birds.pgm -p -t 145 -m 2000 -f 3000 7500 -w Birds_o.pgm -b results.ppm
 
 NB: the order of the Arguements doesn't matter except the input name must be at the beginning
 
@@ -76,6 +82,13 @@ To compile tests run:
 To run ./test
 
 =====================================================================================================================================================
-+                                                             MASTERY  WORK                                                                         +
++                                                             FILES CO-OPERATION                                                                    +
 =====================================================================================================================================================
 
+There PGMimage.h/cpp and PPMimage.h/cpp provides methods to work pgm with and ppm images respectively.
+There is then the PGMimageProcessor.h/cpp which contains connectedComponents class and the PGMimageProcessor template class that are the ones 
+responsible for extracting components from images. The Main.cpp contains the main method and the logic for the arguements extraction from the terminal
+Additionally there is a Tests.cpp to test wether the program operates as it should with this class is a folder test_file which contains the Chess.pgm that
+is used for the testing.
+
+I have also added a few PPM and PGM images to use for tests
