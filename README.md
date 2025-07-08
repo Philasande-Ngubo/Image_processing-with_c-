@@ -1,6 +1,6 @@
-PART 1                                                                           
-
-
+# ![clarify_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24](https://github.com/user-attachments/assets/a86dd2b9-ad72-40c2-bdf7-0170524ee881) Description
+This project shows basic image manipulation with c++. The purpose is to take an image and separate it into tiles that you can then randomly shuffle
+# ![terminal_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24](https://github.com/user-attachments/assets/8194db8a-bcc6-4a68-a1cb-09e80f36837c) Running
 To Compile the program:
     make  (Unix)
 
@@ -52,7 +52,7 @@ this will detect connectedComponents with pixels of values greater than 119 and 
     draws a thin red box around the extracted connectedComponents and saves the result
     to the specified output PPM file
 
-Examples:
+### Examples:
 
 1.     findcomp Birds.pgm -t 100
 
@@ -71,7 +71,7 @@ NB: the order of the Arguements doesn't matter except the input name must be at 
 
 
 
-TESTING 
+## Testing 
 
 
 NB: The file test_file/Chess_Colours.pgm is used for testing and should therefore be not disturbed
@@ -84,7 +84,7 @@ To run
 
     ./test
 
- FILES CO-OPERATION 
+### FILES CO-OPERATION 
 
 
 There PGMimage.h/cpp and PPMimage.h/cpp provides methods to work pgm with and ppm images respectively.
