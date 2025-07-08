@@ -1,5 +1,5 @@
 # ![clarify_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24](https://github.com/user-attachments/assets/a86dd2b9-ad72-40c2-bdf7-0170524ee881) Description
-This project shows basic image manipulation with c++. The purpose is to take an image and separate it into tiles that you can then randomly shuffle
+This project show the basic overview of object detection in images using the BFS algorithm 
 # ![terminal_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24](https://github.com/user-attachments/assets/8194db8a-bcc6-4a68-a1cb-09e80f36837c) Running
 To Compile the program:
     make  (Unix)
